@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA BOLD: Strategic KOL Framework</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700;900&family=Inter:wght@300;400;600;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            /* Pure Black like LA Bold website */
+            color: #e5e5e5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Hexagonal Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(255, 255, 255, 0.02) 50px, rgba(255, 255, 255, 0.02) 51px),
+                repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(255, 255, 255, 0.02) 50px, rgba(255, 255, 255, 0.02) 51px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        /* Atmospheric Blue Neon Glow */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(0, 150, 255, 0.15) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+            animation: atmosphericPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes atmosphericPulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        }
+
+        /* Ensure content is above background effects */
+        nav,
+        main,
+        footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Premium Typography */
+        h1,
+        h2,
+        h3,
+        .heading-style {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Chart Container Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Premium Card Styling with Glassmorphism */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            border-color: #E30613;
+            box-shadow: 0 20px 40px -10px rgba(227, 6, 19, 0.4),
+                0 0 30px rgba(0, 150, 255, 0.2);
+            background: rgba(30, 30, 30, 0.8);
+        }
+
+        .tab-btn {
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            border-color: #E30613;
+            color: #E30613;
+            text-shadow: 0 0 10px rgba(227, 6, 19, 0.5);
+        }
+
+        .risk-badge {
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 0 0 0 rgba(227, 6, 19, 0.6);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(227, 6, 19, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(227, 6, 19, 0);
+            }
+        }
+
+        /* Custom Range Slider for Vetting Tool */
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #E30613;
+            cursor: pointer;
+            margin-top: -7px;
+            box-shadow: 0 0 10px rgba(227, 6, 19, 0.6);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: linear-gradient(90deg, #404040 0%, #E30613 100%);
+            border-radius: 2px;
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Premium Glow Effects */
+        .glow-red {
+            text-shadow: 0 0 20px rgba(227, 6, 19, 0.8);
+        }
+
+        .glow-box {
+            box-shadow: 0 0 30px rgba(227, 6, 19, 0.3),
+                inset 0 0 20px rgba(227, 6, 19, 0.1);
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Premium Navbar with LA Bold Branding -->
+    <nav class="w-full bg-black/90 border-b border-red-900/40 sticky top-0 z-50 backdrop-blur-xl"
+        style="box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 150, 255, 0.1);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <!-- LA Bold Logo -->
+                <div class="flex items-center space-x-1">
+                    <span class="text-white font-light text-2xl tracking-wider"
+                        style="font-family: 'Inter', sans-serif; font-weight: 300;">LA</span>
+                    <div class="bg-gradient-to-r from-red-600 to-red-700 px-3 py-1 flex items-center space-x-1"
+                        style="background: #E30613;">
+                        <span class="text-white font-black text-xl tracking-tight"
+                            style="font-family: 'Roboto Condensed', sans-serif;">BOLD</span>
+                        <span class="text-white text-sm font-bold">&gt;&gt;</span>
+                    </div>
+                </div>
+                <div class="h-8 w-px bg-gray-700 mx-2"></div>
+                <div class="flex flex-col">
+                    <span class="text-white font-bold tracking-widest text-xs"
+                        style="font-family: 'Roboto Condensed', sans-serif;">STRATEGIC PLANNING</span>
+                    <span class="text-xs font-medium glow-red" style="color: #E30613;">THEMATIC APR-MAY 2026</span>
+                </div>
+            </div>
+            <div class="hidden md:flex space-x-6 text-sm font-semibold"
+                style="font-family: 'Roboto Condensed', sans-serif;">
+                <a href="#strategy"
+                    class="text-gray-300 hover:text-white transition-all uppercase tracking-wide hover:glow-red">Strategy
+                    Funnel</a>
+                <a href="#personas"
+                    class="text-gray-300 hover:text-white transition-all uppercase tracking-wide hover:glow-red">Target
+                    Personas</a>
+                <a href="#vetting" class="transition-all flex items-center gap-1 uppercase tracking-wide glow-red"
+                    style="color: #E30613;">
+                    <span>⚡ Vetting Tool</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-16">
+
+        <!-- 1. Strategic Context & Data Requirement -->
+        <section id="strategy" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-8 space-y-6">
+                <div class="border-l-4 border-red-600 pl-6">
+                    <h1 class="text-4xl font-extrabold text-white mb-2">FEARLESS LIVING</h1>
+                    <p class="text-xl text-gray-400">Campaign Strategy: April - May 2026</p>
+                    <p class="text-sm text-gray-500 mt-2">Objective: Deliver "Brave & Daring" message through highly
+                        curated, high-engagement personalities.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+                    <!-- The Hard Constraint -->
+                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-zinc-800">
+                        <h3 style="color: #E30613;" class=" font-bold uppercase text-xs tracking-wider mb-2">The Data
+                            Gate</h3>
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-4xl font-black text-white">3.0%</span>
+                            <span class="text-gray-400">ER Floor</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">We do not accept "Average". The KOL must outperform the
+                            market standard (1.5%) significantly to drive brand equity.</p>
+                    </div>
+
+                    <!-- The Persona Constraint -->
+                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-zinc-800">
+                        <h3 style="color: #E30613;" class=" font-bold uppercase text-xs tracking-wider mb-2">The
+                            Identity Gate</h3>
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-2xl font-black text-white">Active Smoker</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">Non-negotiable. Must be verifiable. <br><span
+                                class="text-red-400 font-bold">CRITICAL:</span> Athletes & Marathoners are automatically
+                            disqualified due to lifestyle contradiction.</p>
+                    </div>
+                </div>
+
+                <!-- Strategic Funnel Viz -->
+                <div class="bg-zinc-900 p-6 rounded-xl border border-zinc-800">
+                    <h3 class="text-white font-bold mb-4">Selection Funnel Logic</h3>
+                    <div class="space-y-2">
+                        <div class="w-full bg-zinc-800 p-3 rounded text-center text-gray-400 text-sm">Total KOL Pool
+                            (Male, 21+)</div>
+                        <div
+                            class="w-[80%] mx-auto bg-zinc-700 p-3 rounded text-center text-gray-300 text-sm font-medium">
+                            Filter: ER > 3%</div>
+                        <div class="w-[60%] mx-auto bg-zinc-600 p-3 rounded text-center text-white text-sm font-medium">
+                            Filter: No Competitors (6mo)</div>
+                        <div
+                            class="w-[40%] mx-auto bg-red-900/80 p-3 rounded text-center text-white text-sm font-bold border border-red-500 shadow-[0_0_15px_rgba(220,38,38,0.5)]">
+                            Final: Active Smoker & Vibe Fit</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Column -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                <div class="bg-zinc-900 p-6 rounded-xl border border-zinc-800 flex-grow flex flex-col">
+                    <h3 class="text-white font-bold mb-2 text-sm">Engagement Benchmark</h3>
+                    <p class="text-xs text-gray-500 mb-4">Why we reject low performers</p>
+                    <div class="chart-container flex-grow">
+                        <canvas id="erChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Persona Archetypes (Replacing specific names) -->
+        <section id="personas" class="space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-end border-b border-zinc-800 pb-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-white">TARGET PERSONAS</h2>
+                    <p class="text-gray-400 mt-2 max-w-2xl">Instead of names, we select based on <span
+                            style="color: #E30613;" class="">Archetypes</span>. This ensures the "Active Smoker" trait
+                        fits
+                        naturally into their content lifestyle, rather than feeling forced.</p>
+                </div>
+                <div class="text-right hidden md:block">
+                    <span class="text-xs font-mono text-gray-500">STRATEGY v2.1</span><br>
+                    <span class="text-xs font-mono text-red-500">EXCLUDING ATHLETES</span>
+                </div>
+            </div>
+
+            <!-- Interactive Persona Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Archetype 1 -->
+                <div class="bg-zinc-900 rounded-xl p-6 card-hover cursor-pointer group relative overflow-hidden"
+                    onclick="loadPersona('rebel')">
+                    <div
+                        class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-red-900/20 to-transparent rounded-bl-3xl">
+                    </div>
+                    <div
+                        class="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center text-2xl mb-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                        🔧</div>
+                    <h3 class="text-xl font-bold text-white mb-1">The Asphalt Rebel</h3>
+                    <p class="text-xs text-red-500 font-bold uppercase tracking-widest mb-4">Automotive / Builder</p>
+                    <p class="text-sm text-gray-400 line-clamp-3">The guy who builds his own path. He's in the garage,
+                        hands greasy, working on a custom bike or classic car. Smoking is his "pause button" during a
+                        long night of work.</p>
+                    <div class="mt-6 flex items-center text-xs text-gray-500 group-hover:text-white transition-colors">
+                        <span>View Strategy</span>
+                        <span class="ml-2">→</span>
+                    </div>
+                </div>
+
+                <!-- Archetype 2 -->
+                <div class="bg-zinc-900 rounded-xl p-6 card-hover cursor-pointer group relative overflow-hidden"
+                    onclick="loadPersona('sonic')">
+                    <div
+                        class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-red-900/20 to-transparent rounded-bl-3xl">
+                    </div>
+                    <div
+                        class="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center text-2xl mb-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                        🎚️</div>
+                    <h3 class="text-xl font-bold text-white mb-1">The Sonic Architect</h3>
+                    <p class="text-xs text-red-500 font-bold uppercase tracking-widest mb-4">DJ / Producer / Nightlife
+                    </p>
+                    <p class="text-sm text-gray-400 line-clamp-3">He owns the night. Not a generic clubber, but the
+                        creator of the vibe. The studio, the backstage, the after-hours. Dark aesthetic is his natural
+                        habitat.</p>
+                    <div class="mt-6 flex items-center text-xs text-gray-500 group-hover:text-white transition-colors">
+                        <span>View Strategy</span>
+                        <span class="ml-2">→</span>
+                    </div>
+                </div>
+
+                <!-- Archetype 3 -->
+                <div class="bg-zinc-900 rounded-xl p-6 card-hover cursor-pointer group relative overflow-hidden"
+                    onclick="loadPersona('visionary')">
+                    <div
+                        class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-red-900/20 to-transparent rounded-bl-3xl">
+                    </div>
+                    <div
+                        class="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center text-2xl mb-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                        📸</div>
+                    <h3 class="text-xl font-bold text-white mb-1">The Urban Visionary</h3>
+                    <p class="text-xs text-red-500 font-bold uppercase tracking-widest mb-4">Street Photo / Director</p>
+                    <p class="text-sm text-gray-400 line-clamp-3">He sees what others miss. Exploring the city at 2 AM.
+                        Rooftops, neon signs, abandoned structures. His content is inherently "Bold" and risky.</p>
+                    <div class="mt-6 flex items-center text-xs text-gray-500 group-hover:text-white transition-colors">
+                        <span>View Strategy</span>
+                        <span class="ml-2">→</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Persona Detail Panel (Dynamic) -->
+            <div id="persona-panel" class="bg-black border border-red-900 rounded-xl p-8 hidden animate-fade-in-up">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 id="panel-title" class="text-2xl font-bold text-white">Select a Persona</h3>
+                        <p id="panel-subtitle" style="color: #E30613;" class=" text-sm font-bold uppercase"></p>
+                    </div>
+                    <button onclick="document.getElementById('persona-panel').classList.add('hidden')"
+                        class="text-gray-500 hover:text-white text-xl">✕</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Column 1: Why it works -->
+                    <div>
+                        <h4 class="text-white text-sm font-bold border-b border-zinc-800 pb-2 mb-3">Strategic Fit</h4>
+                        <p id="panel-fit" class="text-gray-400 text-sm leading-relaxed"></p>
+                    </div>
+                    <!-- Column 2: Content Angle -->
+                    <div>
+                        <h4 class="text-white text-sm font-bold border-b border-zinc-800 pb-2 mb-3">Content Angle
+                            (April-May)</h4>
+                        <p id="panel-angle" class="text-gray-400 text-sm leading-relaxed"></p>
+                    </div>
+                    <!-- Column 3: The Red Flags (User's main concern) -->
+                    <div class="bg-red-900/10 border border-red-900/30 p-4 rounded-lg">
+                        <h4 style="color: #E30613;" class=" text-sm font-bold flex items-center mb-3">
+                            <span class="mr-2">⚠️</span> Exclusion Criteria
+                        </h4>
+                        <ul id="panel-risks" class="space-y-2 text-sm text-gray-300 list-disc pl-4">
+                            <!-- Dynamic list items -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. The Vetting Tool (The Solution to "grryang is a marathoner") -->
+        <section id="vetting" class="bg-zinc-900 rounded-xl border border-zinc-800 overflow-hidden">
+            <div class="bg-gradient-to-r from-red-900 to-black p-6 border-b border-red-800">
+                <h2 class="text-2xl font-bold text-white flex items-center">
+                    <span class="bg-white text-red-900 text-xs font-bold px-2 py-1 rounded mr-3">TOOL</span>
+                    KOL ELIGIBILITY CHECKER
+                </h2>
+                <p class="text-red-200 text-sm mt-1">Use this to validate any potential name before adding to the list.
+                </p>
+            </div>
+
+            <div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Inputs -->
+                <div class="space-y-5">
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-400">1. Lifestyle & Health Check</label>
+                        <div class="flex items-center justify-between bg-black p-4 rounded border border-zinc-700">
+                            <span class="text-gray-300 text-sm">Is this person a Marathoner, Athlete, or Health
+                                Influencer?</span>
+                            <div class="flex items-center space-x-2">
+                                <label class="text-xs text-gray-500">NO</label>
+                                <input type="radio" name="athlete" value="no" class="accent-red-600 w-4 h-4" checked
+                                    onchange="checkScore()">
+                                <label class="text-xs text-gray-500 ml-2">YES</label>
+                                <input type="radio" name="athlete" value="yes" class="accent-red-600 w-4 h-4"
+                                    onchange="checkScore()">
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-600 italic">If YES, immediate disqualification (contradicts
+                            smoking).</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-400">2. Competitor Check (Last 6 Months)</label>
+                        <div class="flex items-center justify-between bg-black p-4 rounded border border-zinc-700">
+                            <span class="text-gray-300 text-sm">Promoted Vape, Other Cigarettes, or Nicotine
+                                Pouches?</span>
+                            <div class="flex items-center space-x-2">
+                                <label class="text-xs text-gray-500">NO</label>
+                                <input type="radio" name="comp" value="no" class="accent-red-600 w-4 h-4" checked
+                                    onchange="checkScore()">
+                                <label class="text-xs text-gray-500 ml-2">YES</label>
+                                <input type="radio" name="comp" value="yes" class="accent-red-600 w-4 h-4"
+                                    onchange="checkScore()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-400">3. Smoker Verification</label>
+                        <div class="flex items-center justify-between bg-black p-4 rounded border border-zinc-700">
+                            <span class="text-gray-300 text-sm">Is there evidence of them smoking in organic
+                                content?</span>
+                            <input type="checkbox" id="smoker-check" class="accent-red-600 w-5 h-5"
+                                onchange="checkScore()">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-400">4. Engagement Rate (ER)</label>
+                        <div class="bg-black p-4 rounded border border-zinc-700">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300 text-sm">Current ER %</span>
+                                <span id="er-val" style="color: #E30613;" class=" font-bold">0%</span>
+                            </div>
+                            <input type="range" id="er-input" min="0" max="10" step="0.1" value="0" class="w-full"
+                                oninput="updateErDisplay(); checkScore()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output -->
+                <div
+                    class="flex flex-col justify-center items-center bg-black rounded-xl border border-zinc-800 p-6 relative">
+                    <h3 class="text-gray-500 text-sm uppercase font-bold mb-4 tracking-widest">Recommendation</h3>
+
+                    <div id="result-badge"
+                        class="w-32 h-32 rounded-full border-4 border-gray-700 flex items-center justify-center mb-4 transition-all duration-500">
+                        <span id="result-icon" class="text-4xl text-gray-700">?</span>
+                    </div>
+
+                    <h2 id="result-text" class="text-2xl font-bold text-gray-500 mb-2">Waiting for input...</h2>
+                    <p id="result-sub" class="text-sm text-center text-gray-600 max-w-xs">Complete the checklist to see
+                        if this KOL fits the strategy.</p>
+
+                    <!-- Hidden Warning for Athlete -->
+                    <div id="athlete-warning"
+                        class="absolute bottom-4 left-4 right-4 bg-red-900/20 border border-red-500/50 p-3 rounded text-xs text-red-400 hidden text-center">
+                        ⛔ REJECTED: Athlete Lifestyle detected. This contradicts the "Smoker" persona and risks
+                        backlash.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Timeline -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <div class="lg:col-span-1">
+                <h3 class="text-xl font-bold text-white mb-2">Execution Timeline</h3>
+                <p class="text-gray-400 text-sm">April - May 2026</p>
+                <div class="mt-6 space-y-4">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-zinc-600 rounded-full mr-3"></div>
+                        <div class="text-sm text-gray-400">Briefing & Admin</div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-red-800 rounded-full mr-3"></div>
+                        <div class="text-sm text-gray-400">Content Creation</div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
+                        <div class="text-sm text-gray-400">Posting Period</div>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-2 bg-zinc-900 p-4 rounded-xl border border-zinc-800">
+                <div class="chart-container">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-zinc-800 py-8 mt-12 bg-black relative overflow-hidden">
+        <!-- Subtle glow effect -->
+        <div
+            class="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-32 bg-gradient-to-b from-red-900/10 to-transparent blur-2xl">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <!-- CONFIDENTIAL Badge -->
+            <div class="flex justify-center mb-4">
+                <div class="inline-flex items-center space-x-2 px-4 py-2 border-2 rounded-md"
+                    style="border-color: #E30613;">
+                    <svg class="w-4 h-4" style="color: #E30613;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                        </path>
+                    </svg>
+                    <span class="text-xs font-bold tracking-widest uppercase"
+                        style="color: #E30613; font-family: 'Roboto Condensed', sans-serif;">Confidential</span>
+                </div>
+            </div>
+
+            <!-- Prepared by Agency -->
+            <div class="flex flex-col items-center space-y-3">
+                <p class="text-gray-500 text-xs uppercase tracking-wider"
+                    style="font-family: 'Roboto Condensed', sans-serif;">Prepared by</p>
+                <img src="https://images.glints.com/unsafe/glints-dashboard.oss-ap-southeast-1.aliyuncs.com/company-logo/9a8b8496cde4c7c28571b7c676819468.png"
+                    alt="Agency Logo" class="h-8 opacity-80 hover:opacity-100 transition-opacity">
+            </div>
+
+            <!-- Divider -->
+            <div class="w-32 h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent mx-auto my-4"></div>
+
+            <!-- Secondary Info -->
+            <p class="text-gray-700 text-xs">Data-Driven KOL Strategy • April-May 2026</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Persona Data Management ---
+        const personas = {
+            'rebel': {
+                title: "The Asphalt Rebel",
+                subtitle: "Automotive / Builder / Custom Culture",
+                fit: "Aligns with 'Masculine' & 'Brave'. The garage setting allows for organic smoking moments (taking a break from work). High credibility with male audience.",
+                angle: "Cinematic shots of welding, grinding (sparks = danger/brave). The silence after the engine starts. Lighting a cigarette as a reward for the work.",
+                risks: [
+                    "Must NOT have sponsorships with energy drinks (often conflicts with tobacco)",
+                    "Verify they are a builder/driver, NOT a professional race athlete (contractual bans)",
+                    "Ensure garage/location is 'Industrial Cool', not 'Slum/Messy'"
+                ]
+            },
+            'sonic': {
+                title: "The Sonic Architect",
+                subtitle: "Underground DJ / Producer",
+                fit: "Nightlife is the natural home of the brand. Low-light visuals are easy to execute. Smoking is culturally accepted in this scene.",
+                angle: "The moment before the drop. The solitude of the studio at 4 AM. Using smoke texture interacting with neon lights.",
+                risks: [
+                    "Avoid 'Mainstream EDM' (skew young/kids)",
+                    "Ensure no 'Vape' usage in past posts (very common in this scene)",
+                    "Must be 21+ audience dominant"
+                ]
+            },
+            'visionary': {
+                title: "The Urban Visionary",
+                subtitle: "Street Photographer / Creative Director",
+                fit: "They guarantee the 'Cinematic' visual requirement of the brief. They frame the city as a playground for the bold.",
+                angle: "Rooftop access (Risk). Exploring forbidden zones. The cigarette is a prop for contemplation while scouting locations.",
+                risks: [
+                    "CRITICAL: Many creatives are also hikers/runners. Check Strava links or running posts.",
+                    "Ensure no bright/pastel color grading in feed (Pink/Orange/Purple forbidden)",
+                    "No 'Arts & Crafts' vibes; must be 'Gritty Urban'."
+                ]
+            }
+        };
+
+        function loadPersona(key) {
+            const data = personas[key];
+            const p = document.getElementById('persona-panel');
+
+            // Populate
+            document.getElementById('panel-title').innerText = data.title;
+            document.getElementById('panel-subtitle').innerText = data.subtitle;
+            document.getElementById('panel-fit').innerText = data.fit;
+            document.getElementById('panel-angle').innerText = data.angle;
+
+            // Clear and populate list
+            const list = document.getElementById('panel-risks');
+            list.innerHTML = '';
+            data.risks.forEach(risk => {
+                const li = document.createElement('li');
+                li.innerText = risk;
+                list.appendChild(li);
+            });
+
+            // Show and animate
+            p.classList.remove('hidden');
+            // Remove animation class to restart it if needed, simple toggle here
+            p.classList.remove('animate-fade-in-up');
+            void p.offsetWidth; // trigger reflow
+            p.classList.add('animate-fade-in-up');
+
+            // Scroll to it
+            p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // --- Vetting Logic ---
+        function updateErDisplay() {
+            const val = document.getElementById('er-input').value;
+            document.getElementById('er-val').innerText = val + "%";
+        }
+
+        function checkScore() {
+            // Get Values
+            const isAthlete = document.querySelector('input[name="athlete"]:checked').value === 'yes';
+            const hasComp = document.querySelector('input[name="comp"]:checked').value === 'yes';
+            const isSmoker = document.getElementById('smoker-check').checked;
+            const er = parseFloat(document.getElementById('er-input').value);
+
+            // UI Elements
+            const badge = document.getElementById('result-badge');
+            const icon = document.getElementById('result-icon');
+            const text = document.getElementById('result-text');
+            const sub = document.getElementById('result-sub');
+            const warning = document.getElementById('athlete-warning');
+
+            warning.classList.add('hidden');
+
+            // Logic Tree
+            if (isAthlete) {
+                // Fail: Athlete
+                setResult('fail', 'REJECTED', 'Athlete Conflict', 'Marathoners/Athletes contradict the "Smoker" persona.');
+                warning.classList.remove('hidden');
+                return;
+            }
+
+            if (hasComp) {
+                // Fail: Competitor
+                setResult('fail', 'REJECTED', 'Competitor Conflict', 'Promoted vape or competitor in last 6 months.');
+                return;
+            }
+
+            if (!isSmoker) {
+                // Fail: Not Smoker
+                setResult('neutral', 'INELIGIBLE', 'Not a Smoker', 'We need verifiable proof of smoking habits.');
+                return;
+            }
+
+            if (er < 3.0) {
+                // Fail: Low Stats
+                setResult('neutral', 'WEAK DATA', 'Low Engagement', 'ER is below the 3.0% strategic floor.');
+                return;
+            }
+
+            // Success
+            setResult('success', 'APPROVED', 'GOOD FIT', 'Candidate meets all data and psychographic criteria.');
+        }
+
+        function setResult(state, mainText, subText, desc) {
+            const badge = document.getElementById('result-badge');
+            const icon = document.getElementById('result-icon');
+            const text = document.getElementById('result-text');
+            const sub = document.getElementById('result-sub');
+
+            // Reset classes
+            badge.className = "w-32 h-32 rounded-full border-4 flex items-center justify-center mb-4 transition-all duration-500";
+            icon.className = "text-4xl transition-colors";
+
+            if (state === 'fail') {
+                badge.classList.add('border-red-600', 'bg-red-900/20');
+                icon.innerText = '✕';
+                icon.classList.add('text-red-500');
+                text.innerText = mainText;
+                text.classList.remove('text-gray-500', 'text-green-500');
+                text.classList.add('text-red-500');
+            } else if (state === 'success') {
+                badge.classList.add('border-green-500', 'bg-green-900/20', 'shadow-[0_0_20px_rgba(34,197,94,0.3)]');
+                icon.innerText = '✓';
+                icon.classList.add('text-green-500');
+                text.innerText = mainText;
+                text.classList.remove('text-gray-500', 'text-red-500');
+                text.classList.add('text-green-500');
+            } else {
+                badge.classList.add('border-yellow-600', 'bg-yellow-900/20');
+                icon.innerText = '!';
+                icon.classList.add('text-yellow-500');
+                text.innerText = mainText;
+                text.classList.remove('text-gray-500', 'text-red-500', 'text-green-500');
+                text.classList.add('text-yellow-500');
+            }
+
+            text.innerText = subText; // Using subText as the main header
+            sub.innerText = desc;
+        }
+
+
+        // --- Chart Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. ER Benchmark Chart
+            const ctxEr = document.getElementById('erChart').getContext('2d');
+            new Chart(ctxEr, {
+                type: 'bar',
+                data: {
+                    labels: ['Market Avg', 'LA Bold Target'],
+                    datasets: [{
+                        label: 'Engagement Rate %',
+                        data: [1.5, 3.0],
+                        backgroundColor: ['#52525b', '#E30613'],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' },
+                            ticks: { color: '#a1a1aa' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#e5e5e5' }
+                        }
+                    }
+                }
+            });
+
+            // 2. Timeline Gantt
+            const ctxTime = document.getElementById('timelineChart').getContext('2d');
+            new Chart(ctxTime, {
+                type: 'bar',
+                data: {
+                    labels: ['Briefing', 'Creation', 'Approvals', 'Posting'],
+                    datasets: [{
+                        label: 'April',
+                        data: [[1, 7], [8, 20], [21, 30], null],
+                        backgroundColor: '#52525b',
+                        barPercentage: 0.5
+                    },
+                    {
+                        label: 'May',
+                        data: [null, null, null, [1, 20]],
+                        backgroundColor: '#E30613',
+                        barPercentage: 0.5
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true, position: 'bottom', labels: { color: '#a1a1aa' } }
+                    },
+                    scales: {
+                        x: {
+                            min: 1,
+                            max: 30,
+                            grid: { color: '#27272a' },
+                            ticks: { color: '#a1a1aa' },
+                            title: { display: true, text: 'Day of Month', color: '#52525b' }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { color: '#e5e5e5' }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
